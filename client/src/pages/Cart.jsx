@@ -146,6 +146,7 @@ const Cart = () => {
   const [stripeToken, setStripeToken] = useState(null);
   const navigate = useNavigate();
   const onToken = (token) => {
+    console.log(token);
     setStripeToken(token);
   };
 
@@ -156,10 +157,11 @@ const Cart = () => {
           tokenId: stripeToken.id,
           amount: 500,
         });
-        navigate('/success', { data: res.data });
-      } catch (error) {
-        console.log(error);
-      }
+        navigate('/success', {
+          stripeData: res.data,
+          products: cart,
+        });
+      } catch {}
     };
     stripeToken && makeRequest();
   }, [stripeToken, cart.total, navigate]);
@@ -233,12 +235,13 @@ const Cart = () => {
             <StripeCheckout
               name='Prime Tech'
               image=''
+              email
               billingAddress
               shippingAddress
               description={`your total is $${cart.total}`}
               amount={cart.total * 100}
-              token={onToken}
               stripeKey={KEY}
+              token={onToken}
             >
               <SummaryButton>CHECKOUT NOW</SummaryButton>
             </StripeCheckout>

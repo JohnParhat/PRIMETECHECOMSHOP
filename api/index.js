@@ -10,21 +10,21 @@ const productRoute = require('./routes/product');
 const cartRoute = require('./routes/cart');
 const orderRoute = require('./routes/order');
 const stripeRoute = require('./routes/stripe');
-const whiteList = ['http://localhost:3000'];
+// const whiteList = ['http://localhost:3000'];
 dotenv.config();
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || whiteList.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     if (!origin || whiteList.indexOf(origin) !== -1) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true,
+// };
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 mongoose
   .connect(process.env.MONGO_URL)

@@ -1,8 +1,8 @@
 const router = require('express').Router();
-// const stripe = require("stripe")(process.env.STRIPE_KEY);
-const KEY = process.env.STRIPE_KEY;
-const stripe = require('stripe')(KEY);
+require('dotenv').config();
+const stripe = require('stripe')(process.env.Private_Api_Key);
 
+const { v4: uuidv4 } = require('uuid');
 router.post('/payment', (req, res) => {
   stripe.charges.create(
     {
