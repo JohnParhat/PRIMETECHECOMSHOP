@@ -6,16 +6,21 @@ import FullscreenExitOutlinedIcon from '@mui/icons-material/FullscreenExitOutlin
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
-import { useContext } from 'react';
-import { DarkModeContext } from '../../context/darkModeContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggle } from '../../redux/darkModeSlice';
 const Navbar = () => {
-  const { dispatch } = useContext(DarkModeContext);
+  const dispatch = useDispatch();
+  const { darkMode } = useSelector((state) => state.darkMode);
+  const handleDarkModeClick = () => {
+    dispatch(toggle());
+  };
   return (
     <div className='navbar'>
       <div className='wrapper'>
         <div className='search'>
           <input type='text' placeholder='search' />
           <SearchOutlinedIcon className='icon' />
+          aasdasdsadsa
         </div>
         <div className='items'>
           <div className='item'>
@@ -25,7 +30,7 @@ const Navbar = () => {
           <div className='item'>
             <DarkModeOutlinedIcon
               className='icon'
-              onClick={() => dispatch({ type: 'TOGGLE' })}
+              onClick={handleDarkModeClick}
             />
           </div>
           <div className='item'>

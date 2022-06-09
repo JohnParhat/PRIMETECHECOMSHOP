@@ -12,11 +12,21 @@ import SettingsSystemDaydreamOutlinedIcon from '@mui/icons-material/SettingsSyst
 import PsychologyOutlinedIcon from '@mui/icons-material/PsychologyOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-import { DarkModeContext } from '../../context/darkModeContext';
-
+import { dark, light } from '../../redux/darkModeSlice';
+import { useDispatch, useSelector } from 'react-redux';
 const SideBar = () => {
-  const { dispatch } = useContext(DarkModeContext);
+  const dispatch = useDispatch();
+  const { darkMode } = useSelector((state) => state.darkMode);
+  const colorOptionsHandle = (e) => {
+    const name = e.target.getAttribute('name');
+    if (name === 'light') {
+      dispatch(light());
+      console.log(darkMode);
+    } else {
+      dispatch(dark());
+      console.log(darkMode);
+    }
+  };
   return (
     <div className='sidebar'>
       <div className='top'>
@@ -91,11 +101,13 @@ const SideBar = () => {
       <div className='bottom'>
         <div
           className='colorOption'
-          onClick={() => dispatch({ type: 'LIGHT' })}
+          name='light'
+          onClick={colorOptionsHandle}
         ></div>
         <div
           className='colorOption'
-          onClick={() => dispatch({ type: 'DARK' })}
+          name='dark'
+          onClick={colorOptionsHandle}
         ></div>
       </div>
     </div>

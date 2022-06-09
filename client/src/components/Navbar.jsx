@@ -1,10 +1,11 @@
 import { Badge } from '@material-ui/core';
-import { Search, ShoppingCartOutlined } from '@material-ui/icons';
+import { Search, ShoppingCartOutlined, LogoutIcon } from '@material-ui/icons';
 import React from 'react';
 import styled from 'styled-components';
 import { mobil, mobile } from '../responsive';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { logout } from '../redux/userSlice';
 
 const Container = styled.div`
   height: 60px;
@@ -70,6 +71,12 @@ const MenuItem = styled.div`
 
 const Navbar = () => {
   const quantity = useSelector((state) => state.cart.quantity);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const handleLogOut = () => {
+    dispatch(logout());
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -84,8 +91,29 @@ const Navbar = () => {
           <Logo>PrimeTechLogo</Logo>
         </Center>
         <Right>
-          <MenuItem>Register</MenuItem>
-          <MenuItem>Sign In</MenuItem>
+          {currentUser ? (
+            <>
+              <MenuItem>
+                welcome {currentUser.user.firstname.toUpperCase()}
+              </MenuItem>
+              <MenuItem onClick={handleLogOut}>Logout</MenuItem>
+            </>
+          ) : (
+            <>
+              <Link
+                style={{ textDecoration: 'none', color: 'black' }}
+                to='/register'
+              >
+                <MenuItem>Register</MenuItem>
+              </Link>
+              <Link
+                style={{ textDecoration: 'none', color: 'black' }}
+                to='/login'
+              >
+                <MenuItem>Sign In</MenuItem>
+              </Link>
+            </>
+          )}
           <Link to='/cart'>
             <MenuItem>
               <Badge badgeContent={quantity} color='primary'>

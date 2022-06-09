@@ -7,38 +7,71 @@ const jwt = require('jsonwebtoken');
 //Register
 router.post('/register', async (req, res) => {
   const body = req.body;
-  if (!body.username && !body.password && !body.email) {
-    res.status(400).json({
-      username: 'missing',
-      email: 'missing',
-      password: 'missing',
-    });
-  } else if (req.body.username && req.body.email && req.body.password) {
-    const newUser = new User({
-      username: req.body.username,
-      email: req.body.email,
-      password: CryptoJS.AES.encrypt(
-        body.password,
-        process.env.PASS_SEC
-      ).toString(),
-    });
+  console.log(body);
+  const { firstname, lastname, username, email, password } = body;
+  const userNameExist = await User.findOne({
+    username: username,
+  });
+  const emailExist = await User.findOne({ email: email });
 
-    try {
-      const savedUser = await newUser.save();
-      res.status(201).json(savedUser);
-    } catch (error) {
-      res.status(500).json(error);
+  if (firstname && lastname && body.username && password && email) {
+    if (userNameExist || emailExist) {
+      if (userNameExist) {
+        res.status(400).json({
+          message: 'username is already registered!',
+        });
+      } else {
+        res.status(400).json({
+          message: 'email is already registered!',
+        });
+      }
+    } else {
+      const newUser = new User({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        username: req.body.username,
+        email: req.body.email,
+        password: CryptoJS.AES.encrypt(
+          body.password,
+          process.env.PASS_SEC
+        ).toString(),
+      });
+
+      try {
+        const savedUser = await newUser.save();
+        res.status(201).json(savedUser);
+      } catch (error) {
+        res.status(500).json(error);
+      }
     }
   } else {
-    if (!req.body.username) {
+    if (Object.keys(body).length === 0) {
+      res.status(400).json({
+        message: {
+          firstname: 'is required!',
+          lastname: 'is required!',
+          username: 'is required!',
+          email: 'is required!',
+          password: 'is required!',
+        },
+      });
+    } else if (!firstname) {
+      res.status(400).json({
+        message: 'firstname is required',
+      });
+    } else if (!lastname) {
+      res.status(400).json({
+        message: 'lastname is required',
+      });
+    } else if (!username) {
       res.status(400).json({
         message: 'username is required',
       });
-    } else if (!req.body.email) {
+    } else if (!email) {
       res.status(400).json({
         message: 'email is required',
       });
-    } else if (!req.body.password) {
+    } else if (!password) {
       res.status(400).json({
         message: 'password is required',
       });
@@ -79,7 +112,6 @@ router.post('/login', async (req, res) => {
       user: { ...others },
       accessToken,
     });
-    console.log('======> this is called');
   } catch (err) {
     res.status(500).json(err);
     console.log(err);
