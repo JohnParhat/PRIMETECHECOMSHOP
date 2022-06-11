@@ -1,4 +1,3 @@
-import { FiberPin } from '@material-ui/icons';
 import { createSlice } from '@reduxjs/toolkit';
 
 export const cartSlice = createSlice({

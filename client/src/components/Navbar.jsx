@@ -1,8 +1,8 @@
 import { Badge } from '@material-ui/core';
-import { Search, ShoppingCartOutlined, LogoutIcon } from '@material-ui/icons';
+import { Search, ShoppingCartOutlined } from '@material-ui/icons';
 import React from 'react';
 import styled from 'styled-components';
-import { mobil, mobile } from '../responsive';
+import { mobile } from '../responsive';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../redux/userSlice';
@@ -88,7 +88,9 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
+          <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
           <Logo>PrimeTechLogo</Logo>
+          </Link>
         </Center>
         <Right>
           {currentUser ? (

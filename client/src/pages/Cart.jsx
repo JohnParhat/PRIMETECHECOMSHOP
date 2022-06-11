@@ -102,11 +102,6 @@ const ProductPrice = styled.div`
   ${mobile({ marginBottom: '20px' })}
 `;
 
-const Hr = styled.hr`
-  background-color: #eee;
-  border: none;
-  height: 1px;
-`;
 
 const Summary = styled.div`
   flex: 1;
@@ -164,7 +159,7 @@ const Cart = () => {
       } catch {}
     };
     stripeToken && makeRequest();
-  }, [stripeToken, cart.total, navigate]);
+  }, [stripeToken,cart, cart.total, navigate]);
   return (
     <Container>
       <Navbar />

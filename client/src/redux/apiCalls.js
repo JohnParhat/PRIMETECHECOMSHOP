@@ -3,7 +3,6 @@ import {
   loginFailure,
   loginStart,
   loginSuccess,
-  setRegisterErrorMessage,
 } from './userSlice';
 
 export const login = async (dispatch, user) => {
@@ -18,7 +17,7 @@ export const login = async (dispatch, user) => {
 
 export const register = async (dispatch, user) => {
   try {
-    const registerRes = await publicRequest.post('./auth/register', user);
+    await publicRequest.post('./auth/register', user);
     const { username, password } = user;
     const res = await publicRequest.post('./auth/login', {
       username,
