@@ -10,8 +10,7 @@ const productRoute = require('./api/routes/product');
 const cartRoute = require('./api/routes/cart');
 const orderRoute = require('./api/routes/order');
 const stripeRoute = require('./api/routes/stripe');
-
-
+const path = require("path");
 dotenv.config();
 app.use(cors());
 mongoose
@@ -28,12 +27,21 @@ mongoose
 
   
 app.use(express.json());
-app.use('/api/users', userRoute);
+app.use('/  api/users', userRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/products', productRoute);
 app.use('/api/carts', cartRoute);
 app.use('/api/orders', orderRoute);
 app.use('/api/checkout', stripeRoute);
+
+
+if(process.env.NODE_ENV==='production'){
+  app.use(express.static('client/build'));
+  app.get('*', (req,res)=>{
+    res.sendFile(path.resolve(__dirname,'client','index.html'));
+  })
+}
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log('Backend server is running!');
